@@ -1,4 +1,5 @@
 ﻿using DemoApplication.Areas.Client.ViewModels.Authentication;
+using DemoApplication.Atribute;
 using DemoApplication.Database;
 using DemoApplication.Database.Models;
 using DemoApplication.Services.Abstracts;
@@ -26,6 +27,7 @@ namespace DemoApplication.Controllers
 
         #region Login and Logout
 
+        [IsAuthenticated]
         [HttpGet("login", Name = "client-auth-login")]
         public async Task<IActionResult> LoginAsync()
         {
@@ -67,6 +69,7 @@ namespace DemoApplication.Controllers
         #endregion
 
         #region Register
+        [IsAuthenticated]
 
         [HttpGet("register", Name = "client-auth-register")]
         public ViewResult Register()

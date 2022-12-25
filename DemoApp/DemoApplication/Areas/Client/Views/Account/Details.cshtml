@@ -1,37 +1,28 @@
-﻿
-
+﻿@model UpdateDetailsViewModel
 
 <div class="col-lg-9 col-12 mt--30 mt-lg--0">
     <div class="myaccount-content">
         <h3>Account Details</h3>
         <div class="account-details-form">
-            <form action="#">
+            <form asp-route="client-account-details" method="POST">
                 <div class="row">
                     <div class="col-lg-6 col-12  mb--30">
-                        <input id="first-name" placeholder="First Name" type="text">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="col-lg-6 col-12  mb--30">
-                        <input id="last-name" placeholder="Last Name" type="text">
+                         <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                  
+               
+                    <div class="col-12">
+                        <button class="btn btn--primary" type="submit">Save Changes</button>
+                        <a asp-route="client-account-password" class="btn btn--primary">Change Password</a>
                     </div>
                    
-                    <div class="col-12  mb--30">
-                        <input id="email" placeholder="Email Address" type="email">
-                    </div>
-                    <div class="col-12  mb--30">
-                        <h4>Password change</h4>
-                    </div>
-                    <div class="col-12  mb--30">
-                        <input id="current-pwd" placeholder="Current Password" type="password">
-                    </div>
-                    <div class="col-lg-6 col-12  mb--30">
-                        <input id="new-pwd" placeholder="New Password" type="password">
-                    </div>
-                    <div class="col-lg-6 col-12  mb--30">
-                        <input id="confirm-pwd" placeholder="Confirm Password" type="password">
-                    </div>
-                    <div class="col-12">
-                        <button class="btn btn--primary">Save Changes</button>
-                    </div>
                 </div>
             </form>
         </div>

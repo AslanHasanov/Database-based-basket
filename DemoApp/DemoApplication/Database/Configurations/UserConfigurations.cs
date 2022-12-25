@@ -16,6 +16,16 @@ namespace DemoApplication.Database.Configurations
                .HasOne(u => u.Basket)
                .WithOne(b => b.User)
                .HasForeignKey<Basket>(u => u.UserId);
+
+            builder
+                .HasIndex(u => u.Email)
+                 .IsUnique();
+
+            builder
+                .HasOne(u => u.Address)
+                .WithOne(b => b.User)
+                .HasForeignKey<Address>(u => u.UserId);
+
         }
     }
 }

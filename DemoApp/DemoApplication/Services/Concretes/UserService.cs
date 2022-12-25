@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text.Json;
+using BC = BCrypt.Net.BCrypt;
 
 namespace DemoApplication.Services.Abstracts
 {
@@ -56,9 +58,19 @@ namespace DemoApplication.Services.Abstracts
             return $"{CurrentUser.FirstName} {CurrentUser.LastName}";
         }
 
+
+
         public async Task<bool> CheckPasswordAsync(string? email, string? password)
         {
-            return await _dataContext.Users.AnyAsync(u => u.Email == email && u.Password == password);
+
+            var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if(user is not null && BC.Verify(password,user.Password))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task SignInAsync(Guid id)
@@ -75,8 +87,13 @@ namespace DemoApplication.Services.Abstracts
 
         public async Task SignInAsync(string? email, string? password)
         {
-            var user = await _dataContext.Users.FirstAsync(u => u.Email == email && u.Password == password);
+            var user = await _dataContext.Users.FirstAsync(u => u.Email == email);
+
+            if (user is not null && BC.Verify(password, user.Password))
+            {
             await SignInAsync(user.Id);
+                
+            }
         }
 
         public async Task SignOutAsync()
@@ -102,7 +119,7 @@ namespace DemoApplication.Services.Abstracts
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    Password = model.Password,
+                    Password = BC.HashPassword(model.Password),
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 };
@@ -147,7 +164,7 @@ namespace DemoApplication.Services.Abstracts
                         await _dataContext.BasketProducts.AddAsync(basketProduct);
                     }
                 }
-            }                 
+            }
         }
     }
 }
